@@ -1,10 +1,9 @@
-import './App.css';
 import React, { useState } from "react";
 import JobForm from "./JobForm";
 import CrewCatalog from "./CrewCatalog";
 import JobList from "./JobList";
 
-function App() {
+const App = () => {
   const [jobs, setJobs] = useState([]);
   const [crewCatalog, setCrewCatalog] = useState([
     { id: 1, type: "Foreman", pricePerUnit: 50 },
@@ -20,7 +19,7 @@ function App() {
       <h1>Construction Labor Cost Calculator</h1>
       <JobForm addJob={addJob} crewCatalog={crewCatalog} />
       <CrewCatalog crewCatalog={crewCatalog} />
-      <JobList jobs={jobs} />
+      <JobList jobs={jobs} crewCatalog={crewCatalog} />
     </div>
   );
 };

@@ -1,6 +1,20 @@
 import React from "react";
 
-const JobList = ({ jobs }) => {
+const JobList = ({ jobs, crewCatalog }) => {
+    console.log({jobs, crewCatalog})
+  const calculateCost = (job) => {
+    let totalCost = 0;
+    console.log({ job });
+    job.crewRequirements.forEach((crew) => {
+      const crewType = crewCatalog.find((type) => type.type === crew.type);
+      console.log({ crew, crewType });
+      if (crewType) {
+        totalCost += crewType.pricePerUnit * (crew.endTime - crew.startTime); 
+      }
+    });
+    return totalCost;
+  };
+
   return (
     <div>
       <h2>Job List</h2>
@@ -8,13 +22,11 @@ const JobList = ({ jobs }) => {
         {jobs.map((job, index) => (
           <li key={index}>
             <div>Job Name: {job.jobName}</div>
-            <div>Start Time: {job.startTime}</div>
-            <div>End Time: {job.endTime}</div>
             <div>
               Crew Requirements:{" "}
-              {job.crewRequirements.map((crew) => (
-                <div key={crew.type}>
-                  {crew.type}: {crew.hours} hours
+              {job.crewRequirements.map((crew, idx) => (
+                <div key={idx}>
+                  {crew.type}: Start Time {crew.startTime}- End Time {crew.endTime} = {Math.abs(crew.endTime-crew.startTime)} {"hrs"}
                 </div>
               ))}
             </div>
@@ -24,18 +36,6 @@ const JobList = ({ jobs }) => {
       </ul>
     </div>
   );
-};
-
-const calculateCost = (job) => {
-  console.log(job);
-  let totalCost = 0;
-  job.crewRequirements.forEach((crew) => {
-    const crewType = job.crewCatalog.find((type) => type.type === crew.type);
-    if (crewType) {
-      totalCost += crewType.pricePerUnit * crew.hours;
-    }
-  });
-  return totalCost;
 };
 
 export default JobList;
